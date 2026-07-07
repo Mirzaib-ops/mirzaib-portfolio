@@ -514,7 +514,7 @@
       <div class="research-card">
         <div class="conf">8th International Conference on Energy, Environment &amp; Sustainable Development — EESD 2026</div>
         <h3>Machine Learning-Based Rainfall Prediction for the Sukkur Region Using Long-Term Climatic Data</h3>
-        <p>Developed a temporal machine learning pipeline using 51 years of historical climate data (1970–2020) to forecast monthly rainfall in semi-arid zones. Proved that Support Vector Regression with an RBF kernel significantly outperforms traditional statistical models, and used SHAP analysis to identify maximum temperature as the strongest driver of monsoon variance.</p>
+        <p>Developed a temporal machine learning pipeline using 51 years of historical climate data (1970?2020) to forecast monthly rainfall in semi-arid zones. Proved that Support Vector Regression with an RBF kernel significantly outperforms traditional statistical models, and used SHAP analysis to identify maximum temperature as the strongest driver of monsoon variance.</p>
         <p>The framework is designed to support the Sindh PDMA in flood mitigation planning and local agricultural authorities in irrigation scheduling.</p>
         <div class="research-metrics">
           <div><div class="rm-num">0.87</div><div class="rm-lbl">R^2 score (SVR-RBF)</div></div>
@@ -666,8 +666,9 @@
 
   const menuToggle = document.getElementById('menuToggle');
 
-  menuToggle.addEventListener('click', openDrawer);
-  hamburger.addEventListener('click', openDrawer);
+  // toggle behavior: open if closed, close if open
+  menuToggle.addEventListener('click', () => { if (drawer.classList.contains('open')) closeDrawer(); else openDrawer(); });
+  hamburger.addEventListener('click', () => { if (drawer.classList.contains('open')) closeDrawer(); else openDrawer(); });
   // allow clicking the displayed name/avatar or hero title to open the sidebar on mobile only
   const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
   const heroTitle = document.querySelector('.hero h1');
