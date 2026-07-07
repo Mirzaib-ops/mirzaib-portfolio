@@ -27,7 +27,12 @@ module.exports = async (req, res) => {
         user: smtpUser,
         pass: smtpPass,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
+
+    await transporter.verify();
 
     await transporter.sendMail({
       from: smtpUser,
@@ -41,6 +46,7 @@ module.exports = async (req, res) => {
     res.status(200).json({ message: 'Email sent successfully.' });
   } catch (error) {
     console.error('Contact API error:', error);
-    res.status(500).json({ message: 'Failed to send email.' });
+    const message = error && error.message ? error.message : 'Failed to send email.';
+    res.status(500).json({ message: `Email send failed: ${message}` });
   }
 };
