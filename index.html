@@ -360,11 +360,11 @@
     <div class="side-label">Languages</div>
     <div class="lang-group">
       <div class="lang-card">
-        <div class="lang-circle">98%</div>
+        <div class="lang-circle" data-target="98">0%</div>
         <div class="lang-label">Urdu</div>
       </div>
       <div class="lang-card">
-        <div class="lang-circle">90%</div>
+        <div class="lang-circle" data-target="90">0%</div>
         <div class="lang-label">English</div>
       </div>
     </div>
@@ -417,7 +417,7 @@
   </div>
 </aside>
 
-<!-- MOBILE DRAWER -->
+<th!-- MOBILE DRAWER -->
 <div class="drawer" id="drawer">
   <div class="drawer-close" id="drawerClose">×</div>
   <nav>
@@ -692,6 +692,25 @@
   });
 
   setActiveLink('#hero');
+
+  const animateCounters = () => {
+    document.querySelectorAll('.lang-circle[data-target]').forEach(el => {
+      const target = Number(el.dataset.target) || 0;
+      let value = 0;
+      const duration = 1200;
+      const stepTime = Math.max(20, Math.floor(duration / target));
+      const timer = setInterval(() => {
+        value += 1;
+        el.textContent = `${value}%`;
+        if (value >= target) {
+          clearInterval(timer);
+          el.textContent = `${target}%`;
+        }
+      }, stepTime);
+    });
+  };
+
+  window.addEventListener('load', animateCounters);
 
   // reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
