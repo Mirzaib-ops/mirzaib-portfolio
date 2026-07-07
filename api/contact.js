@@ -13,18 +13,25 @@ module.exports = async (req, res) => {
   }
 
   try {
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    if (!smtpUser || !smtpPass) {
+      return res.status(500).json({ message: 'SMTP credentials are not configured. Please set SMTP_USER and SMTP_PASS in Vercel environment variables.' });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: Number(process.env.SMTP_PORT || 587),
       secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: smtpUser,
+        pass: smtpPass,
       },
     });
 
     await transporter.sendMail({
-      from: `${name} <${email}>`,
+      from: smtpUser,
+      replyTo: `${name} <${email}>`,
       to: 'mirzaibjagirani@gmail.com',
       subject: `Portfolio contact from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,

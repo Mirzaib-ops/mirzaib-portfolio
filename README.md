@@ -12,25 +12,33 @@ Files included:
 - `assets/resume.pdf` — downloadable resume
 
 Deployment:
-- Host as a static site on GitHub Pages, Vercel, Netlify, or any static hosting provider.
+- This portfolio is deployed on Vercel at `https://mirzaib-portfolio.vercel.app/`.
+- Vercel will automatically install dependencies from `package.json` and run the API route in `api/contact.js`.
 
 Backend form support:
-- This portfolio now includes a small Node.js backend to send contact form messages to `mirzaibjagirani@gmail.com`.
-- Create a `.env` file with SMTP credentials before running the server.
+- The contact form now submits to `/api/contact` and sends messages to `mirzaibjagirani@gmail.com`.
+- On Vercel, set the following Environment Variables in your project settings:
+  - `SMTP_HOST` (e.g. `smtp.gmail.com`)
+  - `SMTP_PORT` (e.g. `587`)
+  - `SMTP_SECURE` (set to `false` for TLS)
+  - `SMTP_USER` (your SMTP account email)
+  - `SMTP_PASS` (your SMTP account password or app password)
 
-Example `.env` values:
+Local testing:
+- If you want to test locally, you can also run the local server using `server.js`.
+- Install dependencies and run:
+```bash
+npm install
+node server.js
+```
+
+Example `.env` values for local testing:
 ```
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-email-password
-```
-
-Install and run:
-```bash
-npm install express nodemailer
-node server.js
 ```
 
 Notes:
