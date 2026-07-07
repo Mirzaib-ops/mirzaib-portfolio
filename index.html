@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mir Zaib Jagirani ? Portfolio</title>
+<title>Mir Zaib Jagirani — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -29,6 +29,7 @@
     font-family:'Inter',sans-serif; font-size:15.5px; line-height:1.7;
     overflow-x:hidden;
   }
+  main.blurred{ filter:blur(6px); transition:filter 0.24s ease; }
   h1,h2,h3,h4{ font-family:'Fraunces',serif; letter-spacing:-0.01em; }
   .mono{ font-family:'JetBrains Mono',monospace; }
   a{ color:inherit; }
@@ -458,16 +459,16 @@
       </div>
     </div>
     <div class="signature-card">
-      <div class="sig-label">EESD 2026 ? Featured Research</div>
-      <div class="sig-title">Rainfall Prediction for the Sukkur Region ? SVR (RBF) vs. Observed</div>
+      <div class="sig-label">EESD 2026 — Featured Research</div>
+      <div class="sig-title">Rainfall Prediction for the Sukkur Region — SVR (RBF) vs. Observed</div>
       <svg viewBox="0 0 560 160">
         <polyline points="0,110 40,95 80,120 120,70 160,90 200,50 240,80 280,40 320,65 360,30 400,55 440,45 480,60 520,35 560,50" fill="none" stroke="#8b93a7" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
         <polyline points="0,115 40,100 80,115 120,75 160,85 200,55 240,75 280,45 320,60 360,35 400,50 440,50 480,55 520,40 560,45" fill="none" stroke="#4fb3a9" stroke-width="2.5"/>
         <circle cx="0" cy="115" r="3" fill="#4fb3a9"/><circle cx="120" cy="75" r="3" fill="#4fb3a9"/><circle cx="240" cy="75" r="3" fill="#4fb3a9"/><circle cx="360" cy="35" r="3" fill="#4fb3a9"/><circle cx="480" cy="55" r="3" fill="#4fb3a9"/><circle cx="560" cy="45" r="3" fill="#4fb3a9"/>
       </svg>
       <div class="sig-metrics">
-        <div class="m">R? score: <b>0.87</b></div>
-        <div class="m">Data span: <b>1970?2020</b></div>
+        <div class="m">R² score: <b>0.87</b></div>
+        <div class="m">Data span: <b>1970–2020</b></div>
         <div class="m">Top driver (SHAP): <b>Tmax, 35%</b></div>
       </div>
     </div>
@@ -481,11 +482,11 @@
       <div class="expertise-grid">
         <div class="exp-card">
           <h3>Full-Stack Development</h3>
-          <p>MERN stack applications built for scale ? including a three-tier government platform digitizing workflows for 27 universities and 8 education boards across Sindh, using MongoDB, Express, React, Node.js and Supabase.</p>
+          <p>MERN stack applications built for scale — including a three-tier government platform digitizing workflows for 27 universities and 8 education boards across Sindh, using MongoDB, Express, React, Node.js and Supabase.</p>
         </div>
         <div class="exp-card">
           <h3>Machine Learning &amp; AI</h3>
-          <p>NLP, computer vision, and regression models built for real accuracy: a 97.85% spam classifier, a 98.89% digit recognizer, and an SVR model explaining monsoon rainfall variance with an R? of 0.87.</p>
+          <p>NLP, computer vision, and regression models built for real accuracy: a 97.85% spam classifier, a 98.89% digit recognizer, and an SVR model explaining monsoon rainfall variance with an R² of 0.87.</p>
         </div>
         <div class="exp-card">
           <h3>Applied Research</h3>
@@ -501,13 +502,13 @@
       <div class="eyebrow">Research &amp; Publications</div>
       <div class="sec-title">Peer-Reviewed Work</div>
       <div class="research-card">
-        <div class="conf">8th International Conference on Energy, Environment &amp; Sustainable Development ? EESD 2026</div>
+        <div class="conf">8th International Conference on Energy, Environment &amp; Sustainable Development — EESD 2026</div>
         <h3>Machine Learning-Based Rainfall Prediction for the Sukkur Region Using Long-Term Climatic Data</h3>
-        <p>Developed a temporal machine learning pipeline using 51 years of historical climate data (1970?2020) to forecast monthly rainfall in semi-arid zones. Proved that Support Vector Regression with an RBF kernel significantly outperforms traditional statistical models, and used SHAP analysis to identify maximum temperature as the strongest driver of monsoon variance.</p>
+        <p>Developed a temporal machine learning pipeline using 51 years of historical climate data (1970–2020) to forecast monthly rainfall in semi-arid zones. Proved that Support Vector Regression with an RBF kernel significantly outperforms traditional statistical models, and used SHAP analysis to identify maximum temperature as the strongest driver of monsoon variance.</p>
         <p>The framework is designed to support the Sindh PDMA in flood mitigation planning and local agricultural authorities in irrigation scheduling.</p>
         <div class="research-metrics">
-          <div><div class="rm-num">0.87</div><div class="rm-lbl">R? score (SVR-RBF)</div></div>
-          <div><div class="rm-num">51 yrs</div><div class="rm-lbl">Historical dataset (1970?2020)</div></div>
+          <div><div class="rm-num">0.87</div><div class="rm-lbl">R² score (SVR-RBF)</div></div>
+          <div><div class="rm-num">51 yrs</div><div class="rm-lbl">Historical dataset (1970–2020)</div></div>
           <div><div class="rm-num">35%</div><div class="rm-lbl">Variance explained by Tmax</div></div>
         </div>
       </div>
@@ -523,7 +524,7 @@
         <div class="project-card">
           <div class="p-tag-top">Final Year Project</div>
           <h3>Unified Information Portal</h3>
-          <p>Centralized MERN platform digitizing workflows for the Sindh Universities &amp; Boards Department ? serving 27 public universities and 8 education boards from one system.</p>
+          <p>Centralized MERN platform digitizing workflows for the Sindh Universities &amp; Boards Department — serving 27 public universities and 8 education boards from one system.</p>
           <div class="tags"><span class="tag">MongoDB</span><span class="tag">Express</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Supabase</span></div>
         </div>
         <div class="project-card">
@@ -535,7 +536,7 @@
         <div class="project-card">
           <div class="p-tag-top">Computer Vision</div>
           <h3>Handwritten Digit Recognizer</h3>
-          <p>SVM (RBF kernel) classifier trained on 8?8 grayscale digit images, achieving 98.89% recognition accuracy.</p>
+          <p>SVM (RBF kernel) classifier trained on 8×8 grayscale digit images, achieving 98.89% recognition accuracy.</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">SVM</span><span class="tag">scikit-learn</span></div>
         </div>
       </div>
@@ -550,18 +551,18 @@
       <div class="timeline">
         <div class="t-item">
           <h3>Machine Learning Intern</h3>
-          <div class="co">Arch Technologies ? Remote</div>
-          <div class="period">March ? April 2026</div>
+          <div class="co">Arch Technologies — Remote</div>
+          <div class="period">March – April 2026</div>
           <ul>
             <li>Built a 97.85% accurate NLP spam classifier using TF-IDF bigrams and Naive Bayes.</li>
-            <li>Built a 98.89% accurate digit recognizer using SVM (RBF) on 8?8 pixel images.</li>
+            <li>Built a 98.89% accurate digit recognizer using SVM (RBF) on 8×8 pixel images.</li>
             <li>Developed a Random Forest model explaining 80.46% of California housing price variance.</li>
             <li>Built a 96.7% accurate Iris flower classifier using scikit-learn with 5-fold cross-validation.</li>
           </ul>
-          <div class="commend">? Commended by the Head of AI for professionalism, technical potential, and team collaboration</div>
+          <div class="commend">Commended by the Head of AI for professionalism, technical potential, and team collaboration</div>
         </div>
         <div class="t-item">
-          <h3>SIBATHON '26 ? Organizer</h3>
+          <h3>SIBATHON '26 — Organizer</h3>
           <div class="co">Sukkur IBA University</div>
           <div class="period">2026</div>
           <ul>
@@ -583,9 +584,9 @@
           <div>
             <h3>Bachelor of Science, Computer Science</h3>
             <div class="inst">Sukkur IBA University, Sukkur, Pakistan</div>
-            <div class="detail">Final Year Project: Unified Information Portal for the Sindh Universities &amp; Boards Department ? CGPA: 2.72</div>
+            <div class="detail">Final Year Project: Unified Information Portal for the Sindh Universities &amp; Boards Department — CGPA: 2.72</div>
           </div>
-          <div class="yr">Fall 2022 ? May 2026</div>
+          <div class="yr">Fall 2022 – May 2026</div>
         </div>
         <div class="edu-card">
           <div>
@@ -638,7 +639,7 @@
 </main>
 
 <footer>
-  <span>? 2026 Mir Zaib Jagirani ? Sukkur IBA University</span>
+  <span>2026 Mir Zaib Jagirani — Sukkur IBA University</span>
   <span>Built with HTML, CSS &amp; JS</span>
 </footer>
 
@@ -650,13 +651,16 @@
   const drawerClose = document.getElementById('drawerClose');
   const scrim = document.getElementById('scrim');
 
-  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show'); }
-  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); }
+  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); }
+  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); }
 
   const menuToggle = document.getElementById('menuToggle');
 
   menuToggle.addEventListener('click', openDrawer);
   hamburger.addEventListener('click', openDrawer);
+  // allow clicking the displayed name/avatar to open the sidebar on mobile
+  const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
+  nameTriggers.forEach(el => el.addEventListener('click', openDrawer));
   drawerClose.addEventListener('click', closeDrawer);
   scrim.addEventListener('click', closeDrawer);
   drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
