@@ -1,2 +1,19 @@
 # mirzaib-portfolio
-A modern developer portfolio showcasing my AI, machine learning, and full-stack development projects.
+
+A modern developer portfolio showcasing AI, machine learning, and full-stack development work.
+
+This repository contains a static portfolio website built with HTML, CSS, and JavaScript.
+
+Files included:
+- `index.html` — main portfolio page
+- `styles.css` — layout and visual styles
+- `script.js` — drawer navigation and interactive behaviors
+- `assets/profile.jpeg` — profile image used on the page
+- `assets/resume.pdf` — downloadable resume
+
+Deployment:
+- Host as a static site on GitHub Pages, Vercel, Netlify, or any static hosting provider.
+
+Notes:
+- Click the profile image to open it in a new tab.
+- The top menu drawer handles navigation for all page sections.

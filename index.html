@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mir Zaib Jagirani ? Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --surface: #10141d;
+    --card: #171c28;
+    --card-hover: #1c2230;
+    --accent: #d9a44e;
+    --accent-soft: rgba(217,164,78,0.12);
+    --accent2: #4fb3a9;
+    --accent2-soft: rgba(79,179,169,0.12);
+    --text: #eceef2;
+    --muted: #8b93a7;
+    --border: #232939;
+    --sidebar-w: 300px;
+  }
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',sans-serif; font-size:15.5px; line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{ font-family:'Fraunces',serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  a{ color:inherit; }
+  ::selection{ background:var(--accent); color:#0b0e14; }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w);
+    background:var(--surface); border-right:1px solid var(--border);
+    padding:2.6rem 1.8rem; overflow-y:auto; z-index:50;
+    display:flex; flex-direction:column; gap:1.6rem;
+  }
+  .sidebar::-webkit-scrollbar{ width:5px; }
+  .sidebar::-webkit-scrollbar-thumb{ background:var(--border); border-radius:3px; }
+
+  .avatar-wrap{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.9rem; }
+  .avatar{
+    width:104px; height:104px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; border:3px solid var(--border);
+  }
+  .avatar img{ width:100%; height:100%; border-radius:50%; object-fit:cover; }
+  .id-name{ font-size:1.25rem; font-weight:600; }
+  .id-title{ color:var(--accent); font-size:0.82rem; line-height:1.5; }
+  .id-loc{ color:var(--muted); font-size:0.78rem; }
+
+  .side-divider{ height:1px; background:var(--border); }
+  .side-label{
+    font-size:0.68rem; text-transform:uppercase; letter-spacing:2px;
+    color:var(--muted); margin-bottom:0.8rem;
+  }
+
+  .meta-row{ display:flex; justify-content:space-between; font-size:0.82rem; padding:0.35rem 0; }
+  .meta-row span:first-child{ color:var(--muted); }
+
+  .chip-group{ display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.9rem; }
+  .chip-group:last-child{ margin-bottom:0; }
+  .chip-cat{ font-size:0.72rem; color:var(--muted); width:100%; margin-bottom:0.3rem; }
+  .chip{
+    font-size:0.72rem; padding:0.32rem 0.65rem; border-radius:0.4rem;
+    background:var(--card); border:1px solid var(--border); color:var(--text);
+  }
+
+  .side-contact a{
+    display:flex; align-items:center; gap:0.6rem; font-size:0.8rem; color:var(--muted);
+    text-decoration:none; padding:0.3rem 0; transition:color 0.2s;
+    word-break:break-all;
+  }
+  .side-contact a:hover{ color:var(--accent); }
+  .side-contact svg{ flex-shrink:0; width:15px; height:15px; }
+
+  .btn-resume{
+    display:flex; align-items:center; justify-content:center; gap:0.5rem;
+    background:var(--accent); color:#0b0e14; text-decoration:none;
+    padding:0.75rem 1rem; border-radius:0.5rem; font-weight:600; font-size:0.85rem;
+    transition:transform 0.2s, background 0.2s;
+  }
+  .btn-resume:hover{ background:#e6b563; transform:translateY(-2px); }
+
+  .social-row{ display:flex; gap:0.7rem; }
+  .social-row a{
+    width:36px; height:36px; border-radius:0.5rem; background:var(--card);
+    border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--muted); transition:all 0.2s;
+  }
+  .social-row a:hover{ color:var(--accent); border-color:var(--accent); }
+  .social-row svg{ width:16px; height:16px; }
+
+  .sidebar-nav a{ opacity:0.95; transition:all 0.25s ease; }
+  .sidebar-nav a.active,
+  .drawer nav a.active{ background:rgba(79,179,169,0.2); color:var(--accent2); border-color:rgba(79,179,169,0.25); box-shadow:0 8px 22px rgba(79,179,169,0.08); transform:translateX(2px); }
+  .sidebar-nav a:hover{ background:rgba(79,179,169,0.08); color:var(--accent2); }
+
+  @keyframes floatAvatar{ 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-8px) rotate(-0.5deg); } }
+  @keyframes fadeInUp{ from{ opacity:0; transform:scale(0.96) translateY(16px); } to{ opacity:1; transform:scale(1) translateY(0); } }
+
+  /* ---------- MOBILE TOPBAR ---------- */
+  .topbar{ display:none; }
+  .menu-toggle{
+    position:fixed; top:1rem; right:1rem; z-index:220;
+    width:52px; height:52px; border-radius:1rem;
+    background:rgba(79,179,169,0.16); border:1px solid rgba(79,179,169,0.3);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .menu-toggle:hover{
+    background:rgba(79,179,169,0.28);
+    transform:translateY(-1px);
+    box-shadow:0 12px 24px rgba(0,0,0,0.18);
+  }
+  .menu-toggle svg{ width:24px; height:24px; color:var(--accent2); }
+
+  .hamburger{
+    position:fixed; top:1rem; right:1rem; z-index:200;
+    width:44px; height:44px; border-radius:0.6rem;
+    background:var(--surface); border:1px solid var(--border);
+    display:none; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .hamburger svg{ width:20px; height:20px; color:var(--text); }
+
+  .drawer{
+    position:fixed; top:0; right:-320px; width:280px; height:100%;
+    background:var(--surface); border-left:1px solid var(--border);
+    z-index:210; transition:right 0.35s ease; padding:2rem 1.5rem;
+  }
+  .drawer.open{ right:0; }
+  .drawer-close{ float:right; cursor:pointer; color:var(--muted); }
+  .drawer nav{ margin-top:3rem; display:flex; flex-direction:column; gap:0.3rem; }
+  .drawer nav a{
+    display:flex; align-items:center; gap:0.7rem; padding:0.8rem 0.9rem; border-radius:0.5rem;
+    color:var(--muted); text-decoration:none; font-size:0.95rem; transition:all 0.2s;
+  }
+  .drawer nav a:hover{ background:var(--card); color:var(--accent); }
+  .scrim{ position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:205; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .scrim.show{ opacity:1; pointer-events:auto; }
+
+  /* ---------- MAIN ---------- */
+  main{ margin-left:var(--sidebar-w); }
+  section{ padding:5rem 4rem; border-bottom:1px solid var(--border); }
+  section:last-of-type{ border-bottom:none; }
+  .eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:2.5px; color:var(--accent2); margin-bottom:0.7rem; }
+  .sec-title{ font-size:clamp(1.6rem,3vw,2.3rem); font-weight:600; margin-bottom:2.2rem; }
+
+  /* HERO */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    position:relative; overflow:hidden; padding:4rem;
+  }
+  .hero-bg{ position:absolute; inset:0; opacity:0.5; pointer-events:none; }
+  .hero-content{ position:relative; max-width:760px; z-index:2; }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    background:var(--accent-soft); border:1px solid rgba(217,164,78,0.35); color:var(--accent);
+    padding:0.4rem 0.9rem; border-radius:2rem; font-size:0.78rem; margin-bottom:1.6rem;
+  }
+  .hero h1{ font-size:clamp(2.4rem,5.5vw,4.2rem); font-weight:700; line-height:1.08; margin-bottom:1.3rem; }
+  .hero h1 em{ font-style:normal; color:var(--accent); }
+  .hero .role-line{ font-size:1.1rem; color:var(--accent2); margin-bottom:1.4rem; }
+  .hero p.lede{ color:var(--muted); max-width:560px; margin-bottom:2.2rem; font-size:1.02rem; }
+  .hero-actions{ display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3rem; }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:2rem; align-items:start; }
+  .hero-left{ max-width:760px; }
+  .hero-avatar-card{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; width:100%; max-width:300px; min-height:340px; padding:2rem 1.8rem; border-radius:1.6rem; background:rgba(14,19,30,0.95); border:1px solid rgba(79,179,169,0.14); box-shadow:0 28px 60px rgba(0,0,0,0.24); }
+  .hero-avatar-circle{ width:150px; height:150px; border-radius:50%; background:linear-gradient(135deg, rgba(79,179,169,0.95), rgba(217,164,78,0.95)); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:3rem; font-weight:800; color:#0b0e14; box-shadow:0 18px 40px rgba(0,0,0,0.24); }
+  .hero-avatar-name{ font-size:1.15rem; font-weight:700; margin-top:0.35rem; }
+  .hero-avatar-caption{ color:var(--muted); text-align:center; max-width:240px; line-height:1.6; }
+  .hero-typed{ color:var(--accent2); margin-bottom:1.2rem; font-size:1rem; letter-spacing:0.02em; }
+  .hero-tagline{ display:flex; align-items:center; gap:0.9rem; flex-wrap:wrap; margin-bottom:1.4rem; }
+  .hero-tag{ background:rgba(79,179,169,0.12); color:var(--accent2); padding:0.55rem 1rem; border-radius:999px; font-size:0.85rem; font-weight:600; }
+  .hero-actions{ display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3rem; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:0.45rem; padding:0.95rem 1.35rem; border-radius:999px; font-weight:600; text-decoration:none; transition:all 0.25s ease; }
+  .btn-primary{ background:var(--accent2); color:#0b0e14; }
+  .btn-primary:hover{ transform:translateY(-2px); background:#63c4ba; }
+  .btn-outline{ border:1px solid rgba(79,179,169,0.3); color:var(--text); }
+  .btn-outline:hover{ background:rgba(79,179,169,0.08); color:var(--accent2); transform:translateY(-2px); }
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,minmax(120px,1fr)); gap:1rem; margin-top:2rem; }
+  .stat-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1.1rem 1.2rem; text-align:center; }
+  .stat-card .stat-num{ font-family:'JetBrains Mono',monospace; color:var(--accent2); font-size:1.35rem; font-weight:700; margin-bottom:0.35rem; }
+  .stat-card .stat-label{ font-size:0.82rem; color:var(--muted); }
+  .typewriter{ text-transform:none; }
+
+  .hero-avatar-icon{ width:180px; height:180px; border-radius:50%; background:linear-gradient(135deg, rgba(79,179,169,0.95), rgba(217,164,78,0.95)); display:flex; align-items:center; justify-content:center; font-size:5rem; box-shadow:0 28px 60px rgba(0,0,0,0.24); }
+  .hero-avatar-card{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; width:100%; max-width:320px; min-height:380px; padding:2rem; border-radius:1.4rem; background:rgba(21,26,39,0.95); border:1px solid rgba(79,179,169,0.14); box-shadow:0 28px 70px rgba(0,0,0,0.28); }
+  .hero-avatar-circle{ width:140px; height:140px; border-radius:50%; background:linear-gradient(135deg, rgba(79,179,169,0.95), rgba(217,164,78,0.95)); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:3rem; font-weight:800; color:#0b0e14; box-shadow:0 18px 40px rgba(0,0,0,0.24); }
+  .hero-avatar-name{ font-size:1.2rem; font-weight:700; margin-top:0.4rem; }
+  .hero-avatar-caption{ color:var(--muted); text-align:center; max-width:260px; line-height:1.5; }
+
+  .sidebar-section{ display:flex; flex-direction:column; gap:1rem; }
+  .lang-group{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+  .lang-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1rem; display:flex; flex-direction:column; align-items:center; gap:0.8rem; }
+  .lang-circle{ width:84px; height:84px; border-radius:50%; border:4px solid rgba(79,179,169,0.18); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; color:var(--accent2); font-size:1.1rem; background:radial-gradient(circle at top left, rgba(79,179,169,0.16), transparent 45%); }
+  .lang-label{ color:var(--text); font-size:0.88rem; text-align:center; }
+  .skill-progress{ display:flex; align-items:center; gap:0.75rem; }
+  .skill-bar{ flex:1; height:0.6rem; background:rgba(255,255,255,0.05); border-radius:999px; overflow:hidden; border:1px solid var(--border); }
+  .skill-fill{ width:75%; height:100%; background:linear-gradient(90deg, rgba(79,179,169,0.96), rgba(217,164,78,0.96)); }
+  .skill-percent{ font-size:0.75rem; color:var(--accent2); font-weight:700; min-width:32px; text-align:right; }
+
+  .sidebar-nav a,
+  .drawer nav a{ position:relative; }
+  .sidebar-nav a.active::before,
+  .drawer nav a.active::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--accent2); border-radius:0 4px 4px 0; }
+
+  @keyframes blinkCaret{ 50% { border-color: transparent; } }
+
+  /* SIGNATURE CHART (SVR rainfall curve) */
+  .signature-card{
+    margin-top:3rem; background:var(--card); border:1px solid var(--border);
+    border-radius:1rem; padding:1.6rem 1.8rem; max-width:640px; position:relative;
+  }
+  .signature-card .sig-label{ font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.2rem; }
+  .signature-card .sig-title{ font-size:0.95rem; margin-bottom:0.9rem; color:var(--text); font-family:'Inter',sans-serif; font-weight:600; }
+  .signature-card svg{ width:100%; height:auto; display:block; }
+  .sig-metrics{ display:flex; gap:1.6rem; margin-top:0.9rem; flex-wrap:wrap; }
+  .sig-metrics .m{ font-size:0.78rem; color:var(--muted); }
+  .sig-metrics .m b{ color:var(--accent2); font-family:'JetBrains Mono',monospace; }
+
+  /* EXPERTISE / SKILLS GRID */
+  .expertise-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.4rem; }
+  .exp-card{ background:var(--card); border:1px solid var(--border); border-radius:0.9rem; padding:1.7rem; transition:all 0.25s; }
+  .exp-card:hover{ border-color:var(--accent2); transform:translateY(-3px); }
+  .exp-card h3{ font-size:1.05rem; margin-bottom:0.7rem; }
+  .exp-card p{ color:var(--muted); font-size:0.88rem; }
+
+  /* RESEARCH */
+  .research-card{
+    background:linear-gradient(160deg, var(--card), var(--surface));
+    border:1px solid var(--border); border-left:3px solid var(--accent2);
+    border-radius:0.4rem 1rem 1rem 0.4rem; padding:2.2rem 2.4rem;
+  }
+  .research-card .conf{ font-size:0.78rem; color:var(--accent2); margin-bottom:0.5rem; letter-spacing:0.5px; }
+  .research-card h3{ font-size:1.35rem; margin-bottom:1rem; line-height:1.35; }
+  .research-card p{ color:var(--muted); margin-bottom:1rem; font-size:0.95rem; }
+  .research-metrics{ display:flex; gap:2rem; flex-wrap:wrap; margin-top:1.4rem; padding-top:1.4rem; border-top:1px solid var(--border); }
+  .research-metrics .rm-num{ font-family:'JetBrains Mono',monospace; color:var(--accent); font-size:1.3rem; font-weight:600; }
+  .research-metrics .rm-lbl{ font-size:0.75rem; color:var(--muted); max-width:150px; }
+
+  /* PROJECTS */
+  .projects-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.8rem; }
+  .project-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1.8rem; transition:all 0.3s; position:relative; overflow:hidden; }
+  .project-card:hover{ transform:translateY(-5px); border-color:var(--accent); box-shadow:0 18px 36px rgba(0,0,0,0.35); }
+  .project-card .p-tag-top{ font-size:0.7rem; color:var(--accent2); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; }
+  .project-card h3{ font-size:1.15rem; margin-bottom:0.7rem; }
+  .project-card p{ color:var(--muted); font-size:0.88rem; margin-bottom:1rem; }
+  .tags{ display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .tag{ font-size:0.7rem; padding:0.28rem 0.6rem; border-radius:0.35rem; background:var(--accent-soft); color:var(--accent); }
+
+  /* EXPERIENCE TIMELINE */
+  .timeline{ position:relative; padding-left:2rem; }
+  .timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:2px; background:var(--border); }
+  .t-item{ position:relative; margin-bottom:2.4rem; }
+  .t-item:last-child{ margin-bottom:0; }
+  .t-item::before{ content:''; position:absolute; left:-2rem; top:5px; width:12px; height:12px; border-radius:50%; background:var(--accent2); border:3px solid var(--bg); box-shadow:0 0 0 2px var(--accent2); }
+  .t-item h3{ font-size:1.1rem; margin-bottom:0.2rem; }
+  .t-item .co{ color:var(--accent); font-size:0.88rem; margin-bottom:0.2rem; }
+  .t-item .period{ color:var(--muted); font-size:0.78rem; margin-bottom:0.8rem; }
+  .t-item ul{ color:var(--muted); font-size:0.9rem; padding-left:1.1rem; }
+  .t-item li{ margin-bottom:0.35rem; }
+  .commend{ display:inline-block; margin-top:0.9rem; font-size:0.8rem; color:var(--accent2); background:var(--accent2-soft); padding:0.4rem 0.8rem; border-radius:0.4rem; }
+
+  /* EDUCATION */
+  .edu-grid{ display:grid; gap:1.2rem; }
+  .edu-card{ background:var(--card); border:1px solid var(--border); border-radius:0.8rem; padding:1.5rem 1.8rem; display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; }
+  .edu-card h3{ font-size:1.02rem; margin-bottom:0.25rem; }
+  .edu-card .inst{ color:var(--accent2); font-size:0.85rem; margin-bottom:0.3rem; }
+  .edu-card .detail{ color:var(--muted); font-size:0.82rem; }
+  .edu-card .yr{ color:var(--muted); font-size:0.8rem; white-space:nowrap; background:var(--surface); padding:0.3rem 0.7rem; border-radius:0.4rem; border:1px solid var(--border); }
+
+  /* CONTACT */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
+  .contact-info-card{ background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:2rem; }
+  .contact-info-card .row{ display:flex; justify-content:space-between; padding:0.7rem 0; border-bottom:1px solid var(--border); font-size:0.9rem; }
+  .contact-info-card .row:last-child{ border-bottom:none; }
+  .contact-info-card .row span:first-child{ color:var(--muted); }
+  form{ display:flex; flex-direction:column; gap:1rem; }
+  form input, form textarea{
+    background:var(--card); border:1px solid var(--border); border-radius:0.6rem;
+    padding:0.9rem 1.1rem; color:var(--text); font-family:'Inter',sans-serif; font-size:0.9rem;
+  }
+  form input:focus, form textarea:focus{ outline:none; border-color:var(--accent2); }
+  form textarea{ resize:vertical; min-height:120px; }
+  form button{
+    background:var(--accent2); color:#0b0e14; border:none; padding:0.9rem; border-radius:0.6rem;
+    font-weight:600; cursor:pointer; font-size:0.9rem; transition:all 0.25s;
+  }
+  form button:hover{ background:#63c4ba; transform:translateY(-2px); }
+  .form-note{ font-size:0.78rem; color:var(--muted); margin-top:0.6rem; }
+
+  footer{ margin-left:var(--sidebar-w); padding:2rem 4rem; color:var(--muted); font-size:0.82rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; }
+
+  .reveal{ opacity:1; transform:translateY(0); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+
+  .sidebar-nav a,
+  .drawer nav a{ position:relative; }
+  .sidebar-nav a.active::before,
+  .drawer nav a.active::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+    background:var(--accent2); border-radius:0 4px 4px 0;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .sidebar{ transform:translateX(-100%); transition:transform 0.3s; box-shadow:20px 0 40px rgba(0,0,0,0.4); }
+    .sidebar.open{ transform:translateX(0); }
+    main, footer{ margin-left:0; }
+    .hamburger{ display:flex; }
+    section{ padding:4rem 1.6rem; }
+    .hero{ padding:5rem 1.6rem 2rem; }
+    .contact-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE HAMBURGER -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+</button>
+<div class="hamburger" id="hamburgerBtn">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="avatar-wrap">
+    <div class="avatar" id="avatarBox">
+      <a href="assets/profile.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open profile image">
+        <img src="assets/profile.jpeg" alt="Mir Zaib Jagirani" />
+      </a>
+    </div>
+    <div class="id-name">Mir Zaib Jagirani</div>
+    <div class="id-title">Full-Stack Developer<br/>Machine Learning Engineer</div>
+    <div class="id-loc">Larkana, Sindh, Pakistan</div>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div>
+    <div class="meta-row"><span>Age</span><span>23</span></div>
+    <div class="meta-row"><span>City</span><span>Larkana</span></div>
+    <div class="meta-row"><span>University</span><span>Sukkur IBA</span></div>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="side-label">Languages</div>
+    <div class="lang-group">
+      <div class="lang-card">
+        <div class="lang-circle">98%</div>
+        <div class="lang-label">Urdu</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-circle">90%</div>
+        <div class="lang-label">English</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="side-label">Expertise</div>
+    <div class="skill-progress">
+      <div class="chip">AI & ML Developer</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+      <div class="skill-percent">95%</div>
+    </div>
+    <div class="skill-progress">
+      <div class="chip">MERN Stack Developer</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+      <div class="skill-percent">80%</div>
+    </div>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div>
+    <div class="side-label">Contact</div>
+    <div class="side-contact">
+      <a href="mailto:mirzaibjagirani@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        mirzaibjagirani@gmail.com
+      </a>
+      <a href="tel:+923144408942">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +92 314 4408942
+      </a>
+    </div>
+  </div>
+
+  <a class="btn-resume" href="assets/resume.pdf" download>
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download Resume
+  </a>
+
+  <div class="social-row">
+    <a href="https://github.com/Mirzaib-ops" target="_blank" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.4.6.1.82-.26.82-.58v-2.2c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.76-1.34-1.76-1.1-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.08 1.84 2.83 1.3 3.52 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.47-1.34-5.47-5.93 0-1.3.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23A11.5 11.5 0 0 1 12 5.8c1.02 0 2.05.14 3.02.4 2.28-1.55 3.28-1.23 3.28-1.23.65 1.66.24 2.88.12 3.18.77.84 1.24 1.92 1.24 3.22 0 4.6-2.81 5.63-5.49 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/mirzaib/" target="_blank" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+    </a>
+  </div>
+</aside>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-close" id="drawerClose">×</div>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-content reveal hero-grid">
+      <div class="hero-left">
+        <div class="hero-eyebrow">AI-first developer open to internships & collaborations</div>
+        <h1>Hello, Check This Out!</h1>
+        <div class="role-line">Crafting modern web and AI experiences for research, products, and teams.</div>
+        <div class="hero-tagline">
+          <div class="hero-tag">Research</div>
+          <div class="hero-tag">Machine Learning</div>
+          <div class="hero-tag">Full-Stack</div>
+        </div>
+        <p class="lede">Explore my portfolio, see live projects, and discover how I turn data into decisions with elegant UI and strong backend systems.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">Explore</a>
+          <a href="#contact" class="btn btn-outline">Get In Touch</a>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Completed Projects</div></div>
+          <div class="stat-card"><div class="stat-num">8+</div><div class="stat-label">Freelance Clients</div></div>
+          <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Honors & Awards</div></div>
+          <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Open Source Projects</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="signature-card">
+      <div class="sig-label">EESD 2026 ? Featured Research</div>
+      <div class="sig-title">Rainfall Prediction for the Sukkur Region ? SVR (RBF) vs. Observed</div>
+      <svg viewBox="0 0 560 160">
+        <polyline points="0,110 40,95 80,120 120,70 160,90 200,50 240,80 280,40 320,65 360,30 400,55 440,45 480,60 520,35 560,50" fill="none" stroke="#8b93a7" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+        <polyline points="0,115 40,100 80,115 120,75 160,85 200,55 240,75 280,45 320,60 360,35 400,50 440,50 480,55 520,40 560,45" fill="none" stroke="#4fb3a9" stroke-width="2.5"/>
+        <circle cx="0" cy="115" r="3" fill="#4fb3a9"/><circle cx="120" cy="75" r="3" fill="#4fb3a9"/><circle cx="240" cy="75" r="3" fill="#4fb3a9"/><circle cx="360" cy="35" r="3" fill="#4fb3a9"/><circle cx="480" cy="55" r="3" fill="#4fb3a9"/><circle cx="560" cy="45" r="3" fill="#4fb3a9"/>
+      </svg>
+      <div class="sig-metrics">
+        <div class="m">R? score: <b>0.87</b></div>
+        <div class="m">Data span: <b>1970?2020</b></div>
+        <div class="m">Top driver (SHAP): <b>Tmax, 35%</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / EXPERTISE -->
+  <section id="expertise">
+    <div class="reveal">
+      <div class="eyebrow">About</div>
+      <div class="sec-title">What I work on</div>
+      <div class="expertise-grid">
+        <div class="exp-card">
+          <h3>Full-Stack Development</h3>
+          <p>MERN stack applications built for scale ? including a three-tier government platform digitizing workflows for 27 universities and 8 education boards across Sindh, using MongoDB, Express, React, Node.js and Supabase.</p>
+        </div>
+        <div class="exp-card">
+          <h3>Machine Learning &amp; AI</h3>
+          <p>NLP, computer vision, and regression models built for real accuracy: a 97.85% spam classifier, a 98.89% digit recognizer, and an SVR model explaining monsoon rainfall variance with an R? of 0.87.</p>
+        </div>
+        <div class="exp-card">
+          <h3>Applied Research</h3>
+          <p>Authored and defended a research paper at the 8th International Conference on Energy, Environment &amp; Sustainable Development (EESD 2026), on ML-based rainfall prediction for flood mitigation and irrigation planning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research" style="background:var(--surface);">
+    <div class="reveal">
+      <div class="eyebrow">Research &amp; Publications</div>
+      <div class="sec-title">Peer-Reviewed Work</div>
+      <div class="research-card">
+        <div class="conf">8th International Conference on Energy, Environment &amp; Sustainable Development ? EESD 2026</div>
+        <h3>Machine Learning-Based Rainfall Prediction for the Sukkur Region Using Long-Term Climatic Data</h3>
+        <p>Developed a temporal machine learning pipeline using 51 years of historical climate data (1970?2020) to forecast monthly rainfall in semi-arid zones. Proved that Support Vector Regression with an RBF kernel significantly outperforms traditional statistical models, and used SHAP analysis to identify maximum temperature as the strongest driver of monsoon variance.</p>
+        <p>The framework is designed to support the Sindh PDMA in flood mitigation planning and local agricultural authorities in irrigation scheduling.</p>
+        <div class="research-metrics">
+          <div><div class="rm-num">0.87</div><div class="rm-lbl">R? score (SVR-RBF)</div></div>
+          <div><div class="rm-num">51 yrs</div><div class="rm-lbl">Historical dataset (1970?2020)</div></div>
+          <div><div class="rm-num">35%</div><div class="rm-lbl">Variance explained by Tmax</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="reveal">
+      <div class="eyebrow">Projects</div>
+      <div class="sec-title">Selected Work</div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="p-tag-top">Final Year Project</div>
+          <h3>Unified Information Portal</h3>
+          <p>Centralized MERN platform digitizing workflows for the Sindh Universities &amp; Boards Department ? serving 27 public universities and 8 education boards from one system.</p>
+          <div class="tags"><span class="tag">MongoDB</span><span class="tag">Express</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Supabase</span></div>
+        </div>
+        <div class="project-card">
+          <div class="p-tag-top">NLP</div>
+          <h3>Email / SMS Spam Classifier</h3>
+          <p>Spam detection system using TF-IDF with bigrams and Naive Bayes, reaching 97.85% classification accuracy on real message data.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">TF-IDF</span><span class="tag">Naive Bayes</span><span class="tag">scikit-learn</span></div>
+        </div>
+        <div class="project-card">
+          <div class="p-tag-top">Computer Vision</div>
+          <h3>Handwritten Digit Recognizer</h3>
+          <p>SVM (RBF kernel) classifier trained on 8?8 grayscale digit images, achieving 98.89% recognition accuracy.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">SVM</span><span class="tag">scikit-learn</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" style="background:var(--surface);">
+    <div class="reveal">
+      <div class="eyebrow">Experience</div>
+      <div class="sec-title">Work History</div>
+      <div class="timeline">
+        <div class="t-item">
+          <h3>Machine Learning Intern</h3>
+          <div class="co">Arch Technologies ? Remote</div>
+          <div class="period">March ? April 2026</div>
+          <ul>
+            <li>Built a 97.85% accurate NLP spam classifier using TF-IDF bigrams and Naive Bayes.</li>
+            <li>Built a 98.89% accurate digit recognizer using SVM (RBF) on 8?8 pixel images.</li>
+            <li>Developed a Random Forest model explaining 80.46% of California housing price variance.</li>
+            <li>Built a 96.7% accurate Iris flower classifier using scikit-learn with 5-fold cross-validation.</li>
+          </ul>
+          <div class="commend">? Commended by the Head of AI for professionalism, technical potential, and team collaboration</div>
+        </div>
+        <div class="t-item">
+          <h3>SIBATHON '26 ? Organizer</h3>
+          <div class="co">Sukkur IBA University</div>
+          <div class="period">2026</div>
+          <ul>
+            <li>Organized and coordinated logistics for the university's flagship hackathon event.</li>
+            <li>Served as Mediator for international academic conferences hosted at the university.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="reveal">
+      <div class="eyebrow">Education</div>
+      <div class="sec-title">Academic Background</div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div>
+            <h3>Bachelor of Science, Computer Science</h3>
+            <div class="inst">Sukkur IBA University, Sukkur, Pakistan</div>
+            <div class="detail">Final Year Project: Unified Information Portal for the Sindh Universities &amp; Boards Department ? CGPA: 2.72</div>
+          </div>
+          <div class="yr">Fall 2022 ? May 2026</div>
+        </div>
+        <div class="edu-card">
+          <div>
+            <h3>Higher Secondary Certificate (Pre-Engineering)</h3>
+            <div class="inst">IBA Public School, Larkana, Pakistan</div>
+            <div class="detail">Grade: A1 (96.36%)</div>
+          </div>
+          <div class="yr">2021</div>
+        </div>
+        <div class="edu-card">
+          <div>
+            <h3>Secondary School Certificate</h3>
+            <div class="inst">IBA Public School, Larkana, Pakistan</div>
+            <div class="detail">Grade: A (72.59%)</div>
+          </div>
+          <div class="yr">2019</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="background:var(--surface);">
+    <div class="reveal">
+      <div class="eyebrow">Contact</div>
+      <div class="sec-title">Let's build something</div>
+      <div class="contact-grid">
+        <div>
+          <div class="contact-info-card">
+            <div class="row"><span>Email</span><span>mirzaibjagirani@gmail.com</span></div>
+            <div class="row"><span>University Email</span><span>mirzaib@iba-suk.edu.pk</span></div>
+            <div class="row"><span>Phone</span><span>+92 314 4408942</span></div>
+            <div class="row"><span>LinkedIn</span><span>linkedin.com/in/mirzaib</span></div>
+            <div class="row"><span>GitHub</span><span>github.com/Mirzaib-ops</span></div>
+            <div class="row"><span>Location</span><span>Larkana, Sindh, Pakistan</span></div>
+          </div>
+        </div>
+        <div>
+          <form onsubmit="event.preventDefault(); this.reset(); document.getElementById('formMsg').style.display='block';">
+            <input type="text" placeholder="Your Name" required/>
+            <input type="email" placeholder="Your Email" required/>
+            <textarea placeholder="Message" required></textarea>
+            <button type="submit">Send Message</button>
+          </form>
+          <div class="form-note" id="formMsg" style="display:none;">Thanks ? this is a static demo form. Connect it to a backend (e.g. Formspree, EmailJS) before deploying live.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>? 2026 Mir Zaib Jagirani ? Sukkur IBA University</span>
+  <span>Built with HTML, CSS &amp; JS</span>
+</footer>
+
+<script>
+  // mobile drawer
+  const sidebar = document.getElementById('sidebar');
+  const hamburger = document.getElementById('hamburgerBtn');
+  const drawer = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawerClose');
+  const scrim = document.getElementById('scrim');
+
+  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show'); }
+  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); }
+
+  const menuToggle = document.getElementById('menuToggle');
+
+  menuToggle.addEventListener('click', openDrawer);
+  hamburger.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+  const drawerLinks = drawer.querySelectorAll('a');
+  const allNavLinks = [...sidebarLinks, ...drawerLinks];
+  const sections = document.querySelectorAll('main section[id]');
+
+  function setActiveLink(hash){
+    allNavLinks.forEach(link => {
+      if(link.getAttribute('href') === hash){
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  allNavLinks.forEach(link => {
+    link.addEventListener('click', () => setActiveLink(link.getAttribute('href')));
+  });
+
+  window.addEventListener('scroll', () => {
+    let currentHash = '#hero';
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if(rect.top <= window.innerHeight * 0.35 && rect.bottom >= window.innerHeight * 0.15){
+        currentHash = `#${section.id}`;
+      }
+    });
+    setActiveLink(currentHash);
+  });
+
+  setActiveLink('#hero');
+
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
