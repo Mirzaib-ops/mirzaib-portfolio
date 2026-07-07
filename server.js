@@ -1,5 +1,5 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const path = require('path');
 
 const app = express();
@@ -15,29 +15,29 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : 587,
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    const apiKey = process.env.SENDGRID_API_KEY;
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+    if (!apiKey || !fromEmail) {
+      return res.status(500).json({ message: 'SendGrid configuration is not complete. Set SENDGRID_API_KEY and SENDGRID_FROM_EMAIL.' });
+    }
 
-    const mailOptions = {
-      from: `${name} <${email}>`,
+    sgMail.setApiKey(apiKey);
+
+    const msg = {
       to: 'mirzaibjagirani@gmail.com',
+      from: fromEmail,
+      replyTo: `${name} <${email}>`,
       subject: `Portfolio contact from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br/>')}</p>`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
     return res.json({ message: 'Email sent successfully.' });
   } catch (error) {
     console.error('Contact form email error:', error);
-    return res.status(500).json({ message: 'Failed to send email.' });
+    const detail = error.response && error.response.body ? JSON.stringify(error.response.body) : error.message;
+    return res.status(500).json({ message: `Failed to send email: ${detail}` });
   }
 });
 

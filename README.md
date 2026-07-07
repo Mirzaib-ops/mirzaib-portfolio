@@ -18,11 +18,10 @@ Deployment:
 Backend form support:
 - The contact form now submits to `/api/contact` and sends messages to `mirzaibjagirani@gmail.com`.
 - On Vercel, set the following Environment Variables in your project settings:
-  - `SMTP_HOST` (e.g. `smtp.gmail.com`)
-  - `SMTP_PORT` (e.g. `587`)
-  - `SMTP_SECURE` (set to `false` for TLS)
-  - `SMTP_USER` (your SMTP account email)
-  - `SMTP_PASS` (your SMTP account password or app password)
+  - `SENDGRID_API_KEY` (your SendGrid API key)
+  - `SENDGRID_FROM_EMAIL` (a verified sender email in SendGrid)
+
+> Use a verified sender address in SendGrid for `SENDGRID_FROM_EMAIL`. The API route sends the form to `mirzaibjagirani@gmail.com` and sets the visitor email as `replyTo`.
 
 Local testing:
 - If you want to test locally, you can also run the local server using `server.js`.
