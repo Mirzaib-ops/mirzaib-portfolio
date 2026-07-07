@@ -658,9 +658,11 @@
 
   menuToggle.addEventListener('click', openDrawer);
   hamburger.addEventListener('click', openDrawer);
-  // allow clicking the displayed name/avatar to open the sidebar on mobile
+  // allow clicking the displayed name/avatar or hero title to open the sidebar on mobile
   const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
   nameTriggers.forEach(el => el.addEventListener('click', openDrawer));
+  const heroTitle = document.querySelector('.hero h1');
+  if (heroTitle) heroTitle.addEventListener('click', openDrawer);
   drawerClose.addEventListener('click', closeDrawer);
   scrim.addEventListener('click', closeDrawer);
   drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
