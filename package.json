@@ -1,0 +1,13 @@
+{
+  "name": "mirzaib-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio with contact form backend.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.4",
+    "nodemailer": "^6.9.4"
+  }
+}

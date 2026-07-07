@@ -624,13 +624,13 @@
           </div>
         </div>
         <div>
-          <form onsubmit="event.preventDefault(); this.reset(); document.getElementById('formMsg').style.display='block';">
-            <input type="text" placeholder="Your Name" required/>
-            <input type="email" placeholder="Your Email" required/>
-            <textarea placeholder="Message" required></textarea>
+          <form id="contactForm">
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <textarea name="message" placeholder="Message" required></textarea>
             <button type="submit">Send Message</button>
           </form>
-          <div class="form-note" id="formMsg" style="display:none;">Thanks ? this is a static demo form. Connect it to a backend (e.g. Formspree, EmailJS) before deploying live.</div>
+          <div class="form-note" id="formMsg" style="display:none;">Sending your message...</div>
         </div>
       </div>
     </div>
@@ -711,6 +711,52 @@
   };
 
   window.addEventListener('load', animateCounters);
+
+  const contactForm = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = {
+        name: contactForm.name.value.trim(),
+        email: contactForm.email.value.trim(),
+        message: contactForm.message.value.trim(),
+      };
+
+      if (!data.name || !data.email || !data.message) {
+        formMsg.style.display = 'block';
+        formMsg.style.color = '#f77';
+        formMsg.textContent = 'Please fill in all fields before sending.';
+        return;
+      }
+
+      formMsg.style.display = 'block';
+      formMsg.style.color = 'var(--accent2)';
+      formMsg.textContent = 'Sending message...';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          formMsg.style.color = 'var(--accent2)';
+          formMsg.textContent = 'Message sent successfully. I will get back to you soon.';
+          contactForm.reset();
+        } else {
+          formMsg.style.color = '#f77';
+          formMsg.textContent = result.message || 'Unable to send the message. Please try again later.';
+        }
+      } catch (error) {
+        formMsg.style.color = '#f77';
+        formMsg.textContent = 'Network error. Please try again later.';
+      }
+    });
+  }
 
   // reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
