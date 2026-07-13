@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +43,7 @@
   }
   .sidebar::-webkit-scrollbar{ width:5px; }
   .sidebar::-webkit-scrollbar-thumb{ background:var(--border); border-radius:3px; }
+  .sidebar-close{ display:none; align-self:flex-end; cursor:pointer; color:var(--muted); font-size:1.6rem; line-height:1; margin-bottom:-0.6rem; }
 
   .avatar-wrap{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.9rem; }
   .avatar{
@@ -99,7 +99,7 @@
   .social-row a:hover{ color:var(--accent); border-color:var(--accent); }
   .social-row svg{ width:16px; height:16px; }
 
-  .sidebar-nav a{ opacity:0.95; transition:all 0.25s ease; }
+  .sidebar-nav a{ opacity:0.95; transition:all 0.25s ease; display:block; padding:0.6rem 0.8rem; border-radius:0.5rem; color:var(--muted); text-decoration:none; font-size:0.88rem; }
   .sidebar-nav a.active,
   .drawer nav a.active{ background:rgba(79,179,169,0.2); color:var(--accent2); border-color:rgba(79,179,169,0.25); box-shadow:0 8px 22px rgba(79,179,169,0.08); transform:translateX(2px); }
   .sidebar-nav a:hover{ background:rgba(79,179,169,0.08); color:var(--accent2); }
@@ -211,7 +211,10 @@
   .sidebar-nav a,
   .drawer nav a{ position:relative; }
   .sidebar-nav a.active::before,
-  .drawer nav a.active::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--accent2); border-radius:0 4px 4px 0; }
+  .drawer nav a.active::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+    background:var(--accent2); border-radius:0 4px 4px 0;
+  }
 
   @keyframes blinkCaret{ 50% { border-color: transparent; } }
 
@@ -313,13 +316,17 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:980px){
-    .sidebar{ transform:translateX(-100%); transition:transform 0.3s; box-shadow:20px 0 40px rgba(0,0,0,0.4); }
+    .sidebar{ transform:translateX(-100%); transition:transform 0.3s; box-shadow:20px 0 40px rgba(0,0,0,0.4); z-index:215; overflow-y:auto; }
     .sidebar.open{ transform:translateX(0); }
+    .sidebar-close{ display:flex; }
     main, footer{ margin-left:0; }
     .hamburger{ display:flex; }
     section{ padding:4rem 1.6rem; }
     .hero{ padding:5rem 1.6rem 2rem; }
     .contact-grid{ grid-template-columns:1fr; }
+    .stats-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .hero-actions{ width:100%; }
+    .hero-actions .btn{ flex:1 1 auto; }
   }
   /* Mobile-specific: full-screen drawer and stronger blur */
   @media (max-width:768px){
@@ -330,6 +337,8 @@
     main.blurred{ filter:blur(10px); }
     .scrim{ background:rgba(0,0,0,0.75); }
     .hero h1{ cursor:pointer; }
+    .expertise-grid{ grid-template-columns:1fr; }
+    .projects-grid{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -346,6 +355,7 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
+  <div class="sidebar-close" id="sidebarClose">×</div>
   <div class="avatar-wrap">
     <div class="avatar" id="avatarBox">
       <a href="assets/profile.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open profile image">
@@ -364,6 +374,18 @@
     <div class="meta-row"><span>City</span><span>Larkana</span></div>
     <div class="meta-row"><span>University</span><span>Sukkur IBA</span></div>
   </div>
+
+  <div class="side-divider"></div>
+
+  <nav class="sidebar-nav" style="display:flex;flex-direction:column;gap:0.2rem;">
+    <a href="#hero">Home</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
   <div class="side-divider"></div>
 
@@ -427,20 +449,6 @@
     </a>
   </div>
 </aside>
-
-<th!-- MOBILE DRAWER -->
-<div class="drawer" id="drawer">
-  <div class="drawer-close" id="drawerClose">×</div>
-  <nav>
-    <a href="#hero">Home</a>
-    <a href="#expertise">Expertise</a>
-    <a href="#research">Research</a>
-    <a href="#projects">Projects</a>
-    <a href="#experience">Experience</a>
-    <a href="#education">Education</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</div>
 
 <main>
   <!-- HERO -->
@@ -657,31 +665,29 @@
   // mobile drawer
   const sidebar = document.getElementById('sidebar');
   const hamburger = document.getElementById('hamburgerBtn');
-  const drawer = document.getElementById('drawer');
-  const drawerClose = document.getElementById('drawerClose');
+  const sidebarClose = document.getElementById('sidebarClose');
   const scrim = document.getElementById('scrim');
 
-  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); }
-  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); }
+  function openDrawer(){ sidebar.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ sidebar.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); document.body.style.overflow=''; }
 
   const menuToggle = document.getElementById('menuToggle');
 
   // toggle behavior: open if closed, close if open
-  menuToggle.addEventListener('click', () => { if (drawer.classList.contains('open')) closeDrawer(); else openDrawer(); });
-  hamburger.addEventListener('click', () => { if (drawer.classList.contains('open')) closeDrawer(); else openDrawer(); });
+  menuToggle.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer(); });
+  hamburger.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer(); });
   // allow clicking the displayed name/avatar or hero title to open the sidebar on mobile only
   const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
   const heroTitle = document.querySelector('.hero h1');
   const isMobile = () => window.innerWidth <= 768;
   nameTriggers.forEach(el => el.addEventListener('click', () => { if (isMobile()) openDrawer(); }));
   if (heroTitle) heroTitle.addEventListener('click', () => { if (isMobile()) openDrawer(); });
-  drawerClose.addEventListener('click', closeDrawer);
+  sidebarClose.addEventListener('click', closeDrawer);
   scrim.addEventListener('click', closeDrawer);
-  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
   const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-  const drawerLinks = drawer.querySelectorAll('a');
-  const allNavLinks = [...sidebarLinks, ...drawerLinks];
+  sidebarLinks.forEach(a => a.addEventListener('click', () => { if (isMobile()) closeDrawer(); }));
+  const allNavLinks = [...sidebarLinks];
   const sections = document.querySelectorAll('main section[id]');
 
   function setActiveLink(hash){
