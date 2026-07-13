@@ -107,10 +107,9 @@
   @keyframes floatAvatar{ 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-8px) rotate(-0.5deg); } }
   @keyframes fadeInUp{ from{ opacity:0; transform:scale(0.96) translateY(16px); } to{ opacity:1; transform:scale(1) translateY(0); } }
 
-  /* ---------- MOBILE TOPBAR ---------- */
-  .topbar{ display:none; }
+  /* ---------- TOPBAR / TOGGLES ---------- */
   .menu-toggle{
-    position:fixed; top:1rem; left:1rem; z-index:220;
+    position:fixed; top:1rem; right:1rem; z-index:220;
     width:52px; height:52px; border-radius:1rem;
     background:rgba(79,179,169,0.16); border:1px solid rgba(79,179,169,0.3);
     display:flex; align-items:center; justify-content:center; cursor:pointer;
@@ -122,6 +121,16 @@
     box-shadow:0 12px 24px rgba(0,0,0,0.18);
   }
   .menu-toggle svg{ width:24px; height:24px; color:var(--accent2); }
+
+  .sidebar-toggle{
+    display:none; /* hidden on desktop */
+    position:fixed; top:1rem; left:1rem; z-index:220;
+    width:52px; height:52px; border-radius:1rem;
+    background:var(--surface); border:1px solid var(--border);
+    align-items:center; justify-content:center; cursor:pointer;
+    transition:transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .sidebar-toggle svg{ width:24px; height:24px; color:var(--text); }
 
   .drawer{
     position:fixed; top:0; right:-320px; width:280px; height:100%;
@@ -308,6 +317,7 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:980px){
+    .sidebar-toggle{ display:flex; }
     .sidebar{ transform:translateX(-100%); transition:transform 0.3s; box-shadow:20px 0 40px rgba(0,0,0,0.4); z-index:215; overflow-y:auto; }
     .sidebar.open{ transform:translateX(0); }
     .sidebar-close{ display:flex; }
@@ -335,15 +345,35 @@
 </head>
 <body>
 
-<!-- MOBILE MENU TOGGLE -->
-<button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+<!-- MOBILE SIDEBAR TOGGLE (LEFT) -->
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Open sidebar">
   <svg viewBox="0 0 24 24" fill="currentColor">
     <circle cx="12" cy="5" r="2.5"/>
     <circle cx="12" cy="12" r="2.5"/>
     <circle cx="12" cy="19" r="2.5"/>
   </svg>
 </button>
+
+<!-- DRAWER TOGGLE (RIGHT) -->
+<button class="menu-toggle" id="menuToggle" aria-label="Open drawer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+</button>
+
 <div class="scrim" id="scrim"></div>
+
+<!-- RIGHT DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-close" id="drawerClose">×</div>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#expertise">Expertise</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -654,29 +684,39 @@
 </footer>
 
 <script>
-  // mobile drawer
   const sidebar = document.getElementById('sidebar');
   const sidebarClose = document.getElementById('sidebarClose');
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  
+  const drawer = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawerClose');
+  const menuToggle = document.getElementById('menuToggle');
   const scrim = document.getElementById('scrim');
 
-  function openDrawer(){ sidebar.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); document.body.style.overflow='hidden'; }
-  function closeDrawer(){ sidebar.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); document.body.style.overflow=''; }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); document.body.style.overflow='hidden'; }
+  function closeSidebar(){ sidebar.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); document.body.style.overflow=''; }
 
-  const menuToggle = document.getElementById('menuToggle');
+  function openDrawer(){ drawer.classList.add('open'); scrim.classList.add('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.add('blurred'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); scrim.classList.remove('show'); const mainEl=document.querySelector('main'); if(mainEl) mainEl.classList.remove('blurred'); document.body.style.overflow=''; }
 
-  // toggle behavior: open if closed, close if open
-  menuToggle.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer(); });
-  // allow clicking the displayed name/avatar or hero title to open the sidebar on mobile only
+  function closeAll(){ closeSidebar(); closeDrawer(); }
+
+  sidebarToggle.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); });
+  menuToggle.addEventListener('click', () => { if (drawer.classList.contains('open')) closeDrawer(); else openDrawer(); });
+
   const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
   const heroTitle = document.querySelector('.hero h1');
   const isMobile = () => window.innerWidth <= 768;
-  nameTriggers.forEach(el => el.addEventListener('click', () => { if (isMobile()) openDrawer(); }));
-  if (heroTitle) heroTitle.addEventListener('click', () => { if (isMobile()) openDrawer(); });
-  sidebarClose.addEventListener('click', closeDrawer);
-  scrim.addEventListener('click', closeDrawer);
+  
+  nameTriggers.forEach(el => el.addEventListener('click', () => { if (isMobile()) openSidebar(); }));
+  if (heroTitle) heroTitle.addEventListener('click', () => { if (isMobile()) openSidebar(); });
+  
+  sidebarClose.addEventListener('click', closeSidebar);
+  drawerClose.addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeAll);
 
-  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
-  sidebarLinks.forEach(a => a.addEventListener('click', () => { if (isMobile()) closeDrawer(); }));
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a, .drawer nav a');
+  sidebarLinks.forEach(a => a.addEventListener('click', () => { if (isMobile()) closeAll(); else closeDrawer(); }));
   const allNavLinks = [...sidebarLinks];
   const sections = document.querySelectorAll('main section[id]');
 
