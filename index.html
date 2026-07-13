@@ -110,7 +110,7 @@
   /* ---------- MOBILE TOPBAR ---------- */
   .topbar{ display:none; }
   .menu-toggle{
-    position:fixed; top:1rem; right:1rem; z-index:220;
+    position:fixed; top:1rem; left:1rem; z-index:220;
     width:52px; height:52px; border-radius:1rem;
     background:rgba(79,179,169,0.16); border:1px solid rgba(79,179,169,0.3);
     display:flex; align-items:center; justify-content:center; cursor:pointer;
@@ -122,14 +122,6 @@
     box-shadow:0 12px 24px rgba(0,0,0,0.18);
   }
   .menu-toggle svg{ width:24px; height:24px; color:var(--accent2); }
-
-  .hamburger{
-    position:fixed; top:1rem; right:1rem; z-index:200;
-    width:44px; height:44px; border-radius:0.6rem;
-    background:var(--surface); border:1px solid var(--border);
-    display:none; align-items:center; justify-content:center; cursor:pointer;
-  }
-  .hamburger svg{ width:20px; height:20px; color:var(--text); }
 
   .drawer{
     position:fixed; top:0; right:-320px; width:280px; height:100%;
@@ -320,7 +312,6 @@
     .sidebar.open{ transform:translateX(0); }
     .sidebar-close{ display:flex; }
     main, footer{ margin-left:0; }
-    .hamburger{ display:flex; }
     section{ padding:4rem 1.6rem; }
     .hero{ padding:5rem 1.6rem 2rem; }
     .contact-grid{ grid-template-columns:1fr; }
@@ -344,13 +335,14 @@
 </head>
 <body>
 
-<!-- MOBILE HAMBURGER -->
+<!-- MOBILE MENU TOGGLE -->
 <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <circle cx="12" cy="5" r="2.5"/>
+    <circle cx="12" cy="12" r="2.5"/>
+    <circle cx="12" cy="19" r="2.5"/>
+  </svg>
 </button>
-<div class="hamburger" id="hamburgerBtn">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</div>
 <div class="scrim" id="scrim"></div>
 
 <!-- SIDEBAR -->
@@ -664,7 +656,6 @@
 <script>
   // mobile drawer
   const sidebar = document.getElementById('sidebar');
-  const hamburger = document.getElementById('hamburgerBtn');
   const sidebarClose = document.getElementById('sidebarClose');
   const scrim = document.getElementById('scrim');
 
@@ -675,7 +666,6 @@
 
   // toggle behavior: open if closed, close if open
   menuToggle.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer(); });
-  hamburger.addEventListener('click', () => { if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer(); });
   // allow clicking the displayed name/avatar or hero title to open the sidebar on mobile only
   const nameTriggers = document.querySelectorAll('.id-name, .hero-avatar-name');
   const heroTitle = document.querySelector('.hero h1');
